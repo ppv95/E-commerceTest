@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace Coretest
 {
@@ -25,32 +26,32 @@ namespace Coretest
         public void ConfigureServices(IServiceCollection services)
         {
 
+        services.AddDbContext<EcommerceDBContext>(options => 
+        options.UseInMemoryDatabase(databaseName: "CommerceTestDataBase"));
 
-            
+        // services.AddHangfire(configuration =>
+        // {
+        //     configuration
+        //             .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+        //             .UseSimpleAssemblyNameTypeSerializer()
+        //             .UseRecommendedSerializerSettings()
+        //             .UseSqlServerStorage(Configuration.GetConnectionString("CommerceTestDataBase"), new SqlServerStorageOptions
+        //             {
+        //                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        //                 SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        //                 QueuePollInterval = TimeSpan.Zero,
+        //                 UseRecommendedIsolationLevel = true,
+        //                 UsePageLocksOnDequeue = true,
+        //                 DisableGlobalLocks = true
+        //             });
+        // });
 
-        services.AddHangfire(configuration =>
-        {
-            configuration
-                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                    .UseSimpleAssemblyNameTypeSerializer()
-                    .UseRecommendedSerializerSettings()
-                    .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
-                    {
-                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                        QueuePollInterval = TimeSpan.Zero,
-                        UseRecommendedIsolationLevel = true,
-                        UsePageLocksOnDequeue = true,
-                        DisableGlobalLocks = true
-                    });
-        });
-
-            services.AddHangfireServer();
+        //     services.AddHangfireServer();
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IBackgroundJobClient backgroundJobs)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -67,8 +68,8 @@ namespace Coretest
 
             app.UseStaticFiles();
 
-            app.UseHangfireDashboard();
-            backgroundJobs.Enqueue(() => Console.WriteLine("Hello from HangFire"));
+            // app.UseHangfireDashboard();
+            // backgroundJobs.Enqueue(() => Console.WriteLine("Hello from HangFire"));
 
             app.UseMvc(routes =>
             {
