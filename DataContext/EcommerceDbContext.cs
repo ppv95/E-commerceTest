@@ -4,6 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 public class EcommerceDBContext : DbContext
 {
+
+    public EcommerceDBContext()
+    {
+        
+    }
+
     public EcommerceDBContext(DbContextOptions<EcommerceDBContext> options) :base(options)
     {
 
