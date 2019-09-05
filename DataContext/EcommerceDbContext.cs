@@ -6,8 +6,7 @@ public class EcommerceDBContext : DbContext
 {
 
     public EcommerceDBContext()
-    {
-        
+    {       
     }
 
     public EcommerceDBContext(DbContextOptions<EcommerceDBContext> options) :base(options)
@@ -18,4 +17,10 @@ public class EcommerceDBContext : DbContext
     public DbSet<Product> Products { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        
+    }
+
 }
