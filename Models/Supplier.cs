@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Coretest.Models
 {
-    public class Supplier
+    public class Supplier : AuditClass
     {
         
     }
